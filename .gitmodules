@@ -1,0 +1,15 @@
+[submodule "direct2d"]
+	path = direct2d
+	url = git@github.com:Connicpu/direct2d-rs
+[submodule "direct3d11"]
+	path = direct3d11
+	url = git@github.com:Connicpu/direct3d11-rs
+[submodule "directwrite"]
+	path = directwrite
+	url = git@github.com:Connicpu/directwrite-rs
+[submodule "dxgi"]
+	path = dxgi
+	url = git@github.com:Connicpu/dxgi-rs
+[submodule "math2d"]
+	path = math2d
+	url = git@github.com:Connicpu/math2d
