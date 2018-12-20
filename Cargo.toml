@@ -1,8 +1,10 @@
 [workspace]
 members = [
+    "dcommon",
     "direct2d",
     "direct3d11",
     "directwrite",
     "dxgi",
-    "math2d"
+    "math2d",
+    "wic"
 ]

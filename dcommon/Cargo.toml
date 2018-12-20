@@ -1,0 +1,22 @@
+[package]
+name = "dcommon"
+version = "0.3.0-alpha1"
+authors = ["Connie Hilarides <conni_h@outlook.com>"]
+edition = "2018"
+workspace = ".."
+
+[target.'cfg(windows)'.dependencies]
+com-wrapper = "0.1.0-alpha2"
+derive-com-wrapper = "0.1.0-alpha4"
+
+[target.'cfg(windows)'.dependencies.math2d]
+version = "0.2.0-alpha1"
+path = "../math2d"
+features = ["d2d"]
+
+[target.'cfg(windows)'.dependencies.winapi]
+version = "0.3.6"
+features = ["dcommon", "d2d1", "winerror"]
+
+[target.'cfg(windows)'.dependencies.wio]
+version = "0.2.0"
