@@ -1,4 +1,6 @@
+use crate::bitmap::Bitmap;
 use crate::descriptions::{pixel_format::PixelFormatDescription, PixelFormat};
+use crate::imaging_factory::ImagingFactory;
 use crate::palette::Palette;
 
 use com_wrapper::ComWrapper;
@@ -86,5 +88,9 @@ impl BitmapSource {
         let len = buffer.len() as u32;
         let hr = self.ptr.CopyPixels(&rect.into(), stride, len, data);
         Error::map_status(hr)
+    }
+
+    pub fn clone_to_bitmap(&self, factory: &ImagingFactory) -> Result<Bitmap, Error> {
+        Bitmap::create(factory).from_source(self).build()
     }
 }

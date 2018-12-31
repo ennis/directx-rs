@@ -54,9 +54,7 @@ impl Bitmap {
     }
 
     pub fn try_clone(&self, factory: &ImagingFactory) -> Result<Self, Error> {
-        Bitmap::create(factory)
-            .from_source(self)
-            .build()
+        self.clone_to_bitmap(factory)
     }
 }
 

@@ -9,6 +9,12 @@ workspace = ".."
 com-wrapper = "0.1.0-alpha2"
 derive-com-wrapper = "0.1.0-alpha4"
 
+checked-enum = "0.1.1-alpha1"
+auto-enum = "0.2.0-alpha1"
+
+com-impl = "0.1.0-alpha2"
+derive-com-impl = "0.1.0-alpha3"
+
 [target.'cfg(windows)'.dependencies.math2d]
 version = "0.2.0-alpha1"
 path = "../math2d"
@@ -16,7 +22,7 @@ features = ["d2d"]
 
 [target.'cfg(windows)'.dependencies.winapi]
 version = "0.3.6"
-features = ["dcommon", "d2d1", "winerror"]
+features = ["combaseapi", "d2d1", "dcommon", "objidl", "objidlbase", "winerror"]
 
 [target.'cfg(windows)'.dependencies.wio]
 version = "0.2.0"

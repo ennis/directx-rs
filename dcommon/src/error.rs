@@ -12,10 +12,7 @@ use wio::wide::FromWide;
 
 #[repr(transparent)]
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
-/// Represents the various failure states that may occur when calling APIs in
-/// DirectX. [See here][1] for more details on the errors you can expect.
-///
-/// [1]: https://docs.microsoft.com/en-us/windows/desktop/direct3ddxgi/dxgi-error
+/// Represents the various failure states that may occur when calling APIs in Windows.
 pub struct Error(pub HRESULT);
 
 impl Error {
@@ -85,7 +82,12 @@ impl From<std::io::Error> for Error {
             .raw_os_error()
             .map(|i| i as _)
             .map(HRESULT_FROM_WIN32)
-            .unwrap_or(E_FAIL);
+            .unwrap_or_else(|| {
+                err.get_ref()
+                    .and_then(|e| e.downcast_ref::<Error>())
+                    .map(|e| e.0)
+                    .unwrap_or(E_FAIL)
+            });
         Error(hr)
     }
 }
@@ -105,14 +107,33 @@ impl std::fmt::Display for Error {
     }
 }
 
+impl From<Error> for std::io::Error {
+    fn from(error: Error) -> std::io::Error {
+        use std::io::{Error as IoError, ErrorKind};
+        use winapi::shared::winerror::*;
+        const ERROR_BIT: i32 = -1 << 31;
+        const WIN32_BITS: i32 = ERROR_BIT | (FACILITY_WIN32 << 16);
+        const CATMASK: i32 = 0x7FFF0000;
+        const ERRMASK: i32 = 0x0000FFFF;
+        let code = 'code: loop {
+            let err = error.0;
+            if err & ERROR_BIT == 0 {
+                break 'code 0; // ERROR: SUCCESS :D
+            }
+            if err & CATMASK == WIN32_BITS {
+                break 'code err & ERRMASK;
+            }
+            return IoError::new(ErrorKind::Other, error);
+        };
+        IoError::from_raw_os_error(code)
+    }
+}
+
 impl std::error::Error for Error {}
 
 #[repr(transparent)]
 #[derive(Copy, Clone, PartialEq, Eq, Hash)]
-/// Represents the various failure states that may occur when calling APIs in
-/// DirectX. [See here][1] for more details on the errors you can expect.
-///
-/// [1]: https://docs.microsoft.com/en-us/windows/desktop/direct3ddxgi/dxgi-error
+/// Represents the various success states that may occur when calling APIs in Windows.
 pub struct Status(pub HRESULT);
 
 impl Status {
@@ -176,6 +197,8 @@ fn format_err(hr: HRESULT) -> String {
 
 mod fixme;
 
+#[doc(hidden)]
+pub mod common;
 #[doc(hidden)]
 pub mod d2d1;
 #[doc(hidden)]
