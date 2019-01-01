@@ -15,6 +15,7 @@ use wio::com::ComPtr;
 
 pub use self::stat::Stat;
 
+//pub mod custom;
 pub mod stat;
 
 #[repr(transparent)]

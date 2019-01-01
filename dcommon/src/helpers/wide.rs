@@ -94,8 +94,7 @@ impl CoTaskWString {
             let size = (data.len() + 1) * 2;
             let mem = CoTaskMemAlloc(size) as *mut u16;
             if mem.is_null() {
-                eprintln!("oom");
-                std::process::abort();
+                panic!("oom: failed to allocate {} bytes", size);
             }
             std::ptr::copy_nonoverlapping(data.as_ptr(), mem, data.len());
             *mem.offset(data.len() as isize) = 0;
@@ -113,6 +112,23 @@ impl CoTaskWString {
         let len = self.len();
         unsafe { std::slice::from_raw_parts(self.ptr.as_ptr(), len) }
     }
+
+    pub fn to_string(&self) -> String {
+        String::from_utf16_lossy(self.data())
+    }
+}
+
+impl From<&'_ CoTaskWString> for String {
+    fn from(s: &'_ CoTaskWString) -> String {
+        s.to_string()
+    }
+}
+
+impl From<&'_ str> for CoTaskWString {
+    fn from(s: &'_ str) -> CoTaskWString {
+        let data: Vec<_> = s.encode_utf16().collect();
+        CoTaskWString::create(&data)
+    }
 }
 
 impl Clone for CoTaskWString {
@@ -126,5 +142,17 @@ impl Drop for CoTaskWString {
         unsafe {
             CoTaskMemFree(self.ptr.as_ptr() as _)
         }
+    }
+}
+
+impl std::fmt::Display for CoTaskWString {
+    fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+        use std::char::{decode_utf16, REPLACEMENT_CHARACTER};
+        use std::fmt::Write;
+        let data = self.data();
+        for r in decode_utf16(data.iter().cloned()) {
+            fmt.write_char(r.unwrap_or(REPLACEMENT_CHARACTER))?;
+        }
+        Ok(())
     }
 }
