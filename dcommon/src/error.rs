@@ -94,8 +94,14 @@ impl From<std::io::Error> for Error {
 
 impl std::fmt::Debug for Error {
     fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+        struct HexErr(i32);
+        impl std::fmt::Debug for HexErr {
+            fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+                write!(fmt, "0x{:x}", self.0 as u32)
+            }
+        }
         fmt.debug_tuple("Error")
-            .field(&self.0)
+            .field(&HexErr(self.0))
             .field(&self.message())
             .finish()
     }
@@ -211,3 +217,20 @@ pub mod dxgi;
 pub mod wic;
 #[doc(hidden)]
 pub mod win32;
+#[doc(hidden)]
+pub mod disp;
+
+#[cfg(test)]
+#[test]
+fn roundtrip_error_io() {
+    fn rt(e: Error) {
+        let err: std::io::Error = e.into();
+        let err: crate::Error = err.into();
+        assert_eq!(err, e);
+    }
+
+    rt(Error::FAIL);
+    rt(Error::WIN32_FILE_NOT_FOUND);
+    rt(Error::D2D_WRONG_STATE);
+    rt(Error::WIC_PROPERTYSIZE);
+}

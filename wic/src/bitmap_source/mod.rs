@@ -12,7 +12,7 @@ use wio::com::ComPtr;
 
 #[repr(transparent)]
 #[derive(ComWrapper)]
-#[com(send, sync, debug)]
+#[com(debug)]
 pub struct BitmapSource {
     ptr: ComPtr<IWICBitmapSource>,
 }

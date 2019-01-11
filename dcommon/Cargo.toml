@@ -22,7 +22,16 @@ features = ["d2d"]
 
 [target.'cfg(windows)'.dependencies.winapi]
 version = "0.3.6"
-features = ["combaseapi", "d2d1", "dcommon", "objidl", "objidlbase", "winerror"]
+features = [
+    "combaseapi",
+    "d2d1",
+    "dcommon",
+    "objidl",
+    "objidlbase",
+    "oleauto",
+    "winbase",
+    "winerror"
+]
 
 [target.'cfg(windows)'.dependencies.wio]
 version = "0.2.0"

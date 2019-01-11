@@ -16,7 +16,7 @@ pub mod builder;
 
 #[repr(transparent)]
 #[derive(ComWrapper)]
-#[com(send, sync, debug)]
+#[com(debug)]
 pub struct Bitmap {
     ptr: ComPtr<IWICBitmap>,
 }
@@ -55,6 +55,10 @@ impl Bitmap {
 
     pub fn try_clone(&self, factory: &ImagingFactory) -> Result<Self, Error> {
         self.clone_to_bitmap(factory)
+    }
+
+    pub fn into_source(self) -> BitmapSource {
+        unsafe { BitmapSource::from_raw(self.ptr.into_raw() as _) }
     }
 }
 

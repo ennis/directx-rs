@@ -6,6 +6,8 @@ use winapi::shared::wtypesbase::LPOLESTR;
 use winapi::um::objidlbase::IEnumString;
 use wio::com::ComPtr;
 
+pub mod custom;
+
 #[derive(ComWrapper)]
 #[com(debug)]
 pub struct EnumString {
@@ -13,7 +15,7 @@ pub struct EnumString {
 }
 
 impl EnumString {
-    pub fn next(&mut self) -> Result<Option<CoTaskWString>, Error> {
+    pub fn next_elem(&mut self) -> Result<Option<CoTaskWString>, Error> {
         use std::mem::replace;
         let mut buf = [None];
         Ok(match self.next_elems(&mut buf)? {
@@ -69,6 +71,6 @@ impl EnumString {
 impl Iterator for EnumString {
     type Item = CoTaskWString;
     fn next(&mut self) -> Option<CoTaskWString> {
-        self.next().ok().unwrap_or(None)
+        self.next_elem().ok().unwrap_or(None)
     }
 }

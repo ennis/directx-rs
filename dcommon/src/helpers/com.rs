@@ -1,5 +1,24 @@
-use std::ops::Deref;
 use com_wrapper::ComWrapper;
+use std::ops::Deref;
+
+pub unsafe fn wrap_com<T>(ptr: *mut T::Interface) -> T
+where
+    T: ComWrapper,
+{
+    assert!(!ptr.is_null());
+    T::from_raw(ptr)
+}
+
+pub unsafe fn wrap_opt_com<T>(ptr: *mut T::Interface) -> Option<T>
+where
+    T: ComWrapper,
+{
+    if !ptr.is_null() {
+        Some(T::from_raw(ptr))
+    } else {
+        None
+    }
+}
 
 pub unsafe fn wrap_ref_to_raw_com<T>(ptr: &*mut T::Interface) -> &T
 where

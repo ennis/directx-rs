@@ -1,7 +1,7 @@
 use std::ffi::OsString;
-
 use std::ptr::NonNull;
 
+use winapi::shared::wtypesbase::LPOLESTR;
 use winapi::um::combaseapi::{CoTaskMemAlloc, CoTaskMemFree};
 use wio::wide::FromWide;
 
@@ -10,6 +10,17 @@ pub unsafe fn wstrlen(mut pwstr: *const u16) -> usize {
     while *pwstr != 0 {
         len += 1;
         pwstr = pwstr.offset(1);
+    }
+    len
+}
+
+pub fn wstrnlen(pwstr: &[u16]) -> usize {
+    let mut len = 0;
+    for &c in pwstr {
+        if c == 0 {
+            break;
+        }
+        len += 1;
     }
     len
 }
@@ -94,7 +105,7 @@ impl CoTaskWString {
             let size = (data.len() + 1) * 2;
             let mem = CoTaskMemAlloc(size) as *mut u16;
             if mem.is_null() {
-                panic!("oom: failed to allocate {} bytes", size);
+                panic!("oom: failed to allocate {} bytes for string", size);
             }
             std::ptr::copy_nonoverlapping(data.as_ptr(), mem, data.len());
             *mem.offset(data.len() as isize) = 0;
@@ -115,6 +126,24 @@ impl CoTaskWString {
 
     pub fn to_string(&self) -> String {
         String::from_utf16_lossy(self.data())
+    }
+
+    pub unsafe fn into_raw(self) -> LPOLESTR {
+        let ptr = self.as_ptr();
+        std::mem::forget(self);
+        ptr
+    }
+
+    pub unsafe fn as_ptr(&self) -> LPOLESTR {
+        self.ptr.as_ptr()
+    }
+
+    pub unsafe fn slice_as_ptr(slice: &[Option<CoTaskWString>]) -> *const LPOLESTR {
+        slice.as_ptr() as *const LPOLESTR
+    }
+
+    pub unsafe fn slice_as_mut_ptr(slice: &mut [Option<CoTaskWString>]) -> *mut LPOLESTR {
+        slice.as_mut_ptr() as *mut LPOLESTR
     }
 }
 

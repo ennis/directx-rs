@@ -17,6 +17,8 @@ pub use winapi::shared::guiddef::GUID;
 
 pub mod error;
 pub mod helpers;
+pub mod idltypes;
 pub mod minwindef;
+pub mod oaidl;
 pub mod objidl;
-pub mod propvariant;
+pub mod ocidl;

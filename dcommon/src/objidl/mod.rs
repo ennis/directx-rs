@@ -1,6 +1,7 @@
 pub use self::{
     sequential_stream::SequentialStream,
     stream::Stream,
+    enum_string::EnumString,
 };
 
 pub mod sequential_stream;

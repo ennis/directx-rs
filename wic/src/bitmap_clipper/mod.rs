@@ -10,7 +10,7 @@ use wio::com::ComPtr;
 
 #[repr(transparent)]
 #[derive(ComWrapper)]
-#[com(send, sync, debug)]
+#[com(debug)]
 pub struct BitmapClipper {
     ptr: ComPtr<IWICBitmapClipper>,
 }
@@ -34,6 +34,10 @@ impl BitmapClipper {
             let hr = self.ptr.Initialize(source.get_raw(), &rect.into());
             Error::map_status(hr)
         }
+    }
+
+    pub fn into_source(self) -> BitmapSource {
+        unsafe { BitmapSource::from_raw(self.ptr.into_raw() as _) }
     }
 }
 
