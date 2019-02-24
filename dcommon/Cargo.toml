@@ -4,6 +4,11 @@ version = "0.3.0-alpha1"
 authors = ["Connie Hilarides <conni_h@outlook.com>"]
 edition = "2018"
 workspace = ".."
+description = """
+Common types and utilities for my collection for DirectX-related crates
+(dxgi, wic, direct2d, directwrite, direct3d11)
+"""
+license = "MIT"
 
 [target.'cfg(windows)'.dependencies]
 com-wrapper = "0.1.0-alpha2"
