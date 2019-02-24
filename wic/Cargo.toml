@@ -4,6 +4,10 @@ version = "0.3.0-alpha1"
 authors = ["Connie Hilarides <conni_h@outlook.com>"]
 edition = "2018"
 workspace = ".."
+description = """
+Safe bindings for the Windows Imaging Component APIs.
+"""
+license = "MIT"
 
 [target.'cfg(windows)'.dependencies]
 com-wrapper = "0.1.0-alpha2"
