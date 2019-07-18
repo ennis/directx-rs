@@ -1,6 +1,3 @@
-use crate::descriptions::PixelFormat;
-
-use dcommon::Error;
 use winapi::um::wincodec::IWICImagingFactory;
 use wio::com::ComPtr;
 
