@@ -10,10 +10,7 @@ where
 }
 
 unsafe impl PropertyType<'static> for i8 {
-    const VARTYPES: &'static [VarType] = &[
-        VarType::I1,
-        VarType(VarType::BYREF.0 | VarType::I1.0),
-    ];
+    const VARTYPES: &'static [VarType] = &[VarType::I1, VarType(VarType::BYREF.0 | VarType::I1.0)];
     fn from_variant(var: &Variant) -> Self {
         unsafe {
             let vt = var.vartype();
@@ -27,10 +24,8 @@ unsafe impl PropertyType<'static> for i8 {
 }
 
 unsafe impl PropertyType<'static> for u8 {
-    const VARTYPES: &'static [VarType] = &[
-        VarType::UI1,
-        VarType(VarType::BYREF.0 | VarType::UI1.0),
-    ];
+    const VARTYPES: &'static [VarType] =
+        &[VarType::UI1, VarType(VarType::BYREF.0 | VarType::UI1.0)];
     fn from_variant(var: &Variant) -> Self {
         unsafe {
             let vt = var.vartype();
@@ -44,10 +39,7 @@ unsafe impl PropertyType<'static> for u8 {
 }
 
 unsafe impl PropertyType<'static> for i16 {
-    const VARTYPES: &'static [VarType] = &[
-        VarType::I2,
-        VarType(VarType::BYREF.0 | VarType::I2.0),
-    ];
+    const VARTYPES: &'static [VarType] = &[VarType::I2, VarType(VarType::BYREF.0 | VarType::I2.0)];
     fn from_variant(var: &Variant) -> Self {
         unsafe {
             let vt = var.vartype();
@@ -61,10 +53,8 @@ unsafe impl PropertyType<'static> for i16 {
 }
 
 unsafe impl PropertyType<'static> for u16 {
-    const VARTYPES: &'static [VarType] = &[
-        VarType::UI2,
-        VarType(VarType::BYREF.0 | VarType::UI2.0),
-    ];
+    const VARTYPES: &'static [VarType] =
+        &[VarType::UI2, VarType(VarType::BYREF.0 | VarType::UI2.0)];
     fn from_variant(var: &Variant) -> Self {
         unsafe {
             let vt = var.vartype();
@@ -120,10 +110,7 @@ unsafe impl PropertyType<'static> for u32 {
 }
 
 unsafe impl PropertyType<'static> for i64 {
-    const VARTYPES: &'static [VarType] = &[
-        VarType::I8,
-        VarType(VarType::BYREF.0 | VarType::I8.0),
-    ];
+    const VARTYPES: &'static [VarType] = &[VarType::I8, VarType(VarType::BYREF.0 | VarType::I8.0)];
     fn from_variant(var: &Variant) -> Self {
         unsafe {
             let vt = var.vartype();
@@ -137,10 +124,8 @@ unsafe impl PropertyType<'static> for i64 {
 }
 
 unsafe impl PropertyType<'static> for u64 {
-    const VARTYPES: &'static [VarType] = &[
-        VarType::UI8,
-        VarType(VarType::BYREF.0 | VarType::UI8.0),
-    ];
+    const VARTYPES: &'static [VarType] =
+        &[VarType::UI8, VarType(VarType::BYREF.0 | VarType::UI8.0)];
     fn from_variant(var: &Variant) -> Self {
         unsafe {
             let vt = var.vartype();

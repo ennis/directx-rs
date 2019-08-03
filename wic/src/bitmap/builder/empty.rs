@@ -40,7 +40,7 @@ impl<'a> EmptyBuilder<'a> {
                 self.cache as u32,
                 &mut ptr,
             );
-            
+
             Error::map_if(hr, || Bitmap::from_raw(ptr))
         }
     }

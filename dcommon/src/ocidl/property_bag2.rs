@@ -1,3 +1,4 @@
+use com_wrapper::ComWrapper;
 use winapi::um::ocidl::IPropertyBag2;
 use wio::com::ComPtr;
 
@@ -10,7 +11,4 @@ pub struct PropertyBag2 {
     ptr: ComPtr<IPropertyBag2>,
 }
 
-impl PropertyBag2 {
-    
-}
-
+impl PropertyBag2 {}

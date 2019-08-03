@@ -1,4 +1,4 @@
-#[enum_flags]
+#[auto_enum::enum_flags]
 pub enum CommitFlags {
     DEFAULT = 0,
     OVERWRITE = 1,

@@ -1,5 +1,5 @@
-use crate::idltypes::safearray::SafeArray;
 use crate::idltypes::decimal::Decimal;
+use crate::idltypes::safearray::SafeArray;
 use crate::idltypes::vartype::VarType;
 use crate::minwindef::filetime::FileTime;
 use crate::GUID;

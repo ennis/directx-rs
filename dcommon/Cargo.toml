@@ -1,6 +1,6 @@
 [package]
 name = "dcommon"
-version = "0.3.0-alpha1"
+version = "0.3.0-beta1"
 authors = ["Connie Hilarides <conni_h@outlook.com>"]
 edition = "2018"
 workspace = ".."
@@ -11,17 +11,13 @@ Common types and utilities for my collection for DirectX-related crates
 license = "MIT"
 
 [target.'cfg(windows)'.dependencies]
-com-wrapper = "0.1.0-alpha2"
-derive-com-wrapper = "0.1.0-alpha4"
-
+com-wrapper = "0.1.0"
 checked-enum = "0.1.1-alpha1"
 auto-enum = "0.2.0-alpha1"
-
-com-impl = "0.1.0-alpha2"
-derive-com-impl = "0.1.0-alpha3"
+com-impl = "0.1.1"
 
 [target.'cfg(windows)'.dependencies.math2d]
-version = "0.2.0-alpha1"
+version = "0.3.0-beta1"
 path = "../math2d"
 features = ["d2d"]
 

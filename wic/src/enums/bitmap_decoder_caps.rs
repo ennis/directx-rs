@@ -1,4 +1,4 @@
-#[enum_flags]
+#[auto_enum::enum_flags]
 pub enum BitmapDecoderCapabilities {
     SAME_ENCODER = 0x01,
     CAN_DECODE_ALL_IMAGES = 0x02,

@@ -1,6 +1,6 @@
 use crate::helpers::wide::CoTaskWString;
-use crate::objidl::enums::{StorageType, LockType};
 use crate::minwindef::FileTime;
+use crate::objidl::enums::{LockType, StorageType};
 
 use checked_enum::UncheckedEnum;
 use winapi::shared::guiddef::CLSID;

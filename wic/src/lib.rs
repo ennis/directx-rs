@@ -1,9 +1,3 @@
-#[macro_use]
-extern crate derive_com_wrapper;
-
-#[macro_use]
-extern crate auto_enum;
-
 pub use crate::{
     bitmap::Bitmap,
     bitmap_clipper::BitmapClipper,

@@ -168,9 +168,7 @@ impl Clone for CoTaskWString {
 
 impl Drop for CoTaskWString {
     fn drop(&mut self) {
-        unsafe {
-            CoTaskMemFree(self.ptr.as_ptr() as _)
-        }
+        unsafe { CoTaskMemFree(self.ptr.as_ptr() as _) }
     }
 }
 

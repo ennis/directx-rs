@@ -4,8 +4,7 @@ use crate::{Error, Status};
 
 use std::iter::Fuse;
 
-use com_impl::Refcount;
-use com_impl::VTable;
+use com_impl::{com_impl, ComImpl, Refcount, VTable};
 use com_wrapper::ComWrapper;
 use winapi::shared::winerror::E_FAIL;
 use winapi::shared::wtypesbase::LPOLESTR;

@@ -46,7 +46,7 @@ pub enum StorageType {
     Fixed,
 }
 
-#[enum_flags]
+#[auto_enum::enum_flags]
 pub enum Category {
     RGB,
     BGR,

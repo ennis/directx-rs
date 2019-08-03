@@ -25,7 +25,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_u8(val: u8) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -34,7 +34,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_i16(val: i16) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -43,7 +43,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_u16(val: u16) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -52,7 +52,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_i32(val: i32) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -61,7 +61,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_u32(val: u32) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -70,7 +70,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_i64(val: i64) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -79,7 +79,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_u64(val: u64) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();
@@ -88,7 +88,7 @@ impl Variant {
             v
         }
     }
-    
+
     pub fn new_f32(val: f32) -> Variant {
         unsafe {
             let mut v: Variant = std::mem::zeroed();

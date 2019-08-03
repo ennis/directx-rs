@@ -1,5 +1,6 @@
 use crate::bitmap_codec_info::BitmapCodecInfo;
 
+use com_wrapper::ComWrapper;
 use winapi::um::wincodec::IWICBitmapEncoderInfo;
 use wio::com::ComPtr;
 

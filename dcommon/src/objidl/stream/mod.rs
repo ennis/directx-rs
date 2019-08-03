@@ -1,15 +1,13 @@
-use crate::helpers::{deref_com_wrapper, deref_com_wrapper_mut};
 use crate::objidl::{
     enums::{CommitFlags, LockType, StatFlags},
-    SequentialStream,
+    ISequentialStream,
 };
 use crate::{Error, Status};
 
 use std::io::SeekFrom;
 
 use com_wrapper::ComWrapper;
-use winapi::um::objidlbase::IStream;
-use winapi::um::objidlbase::{STREAM_SEEK_CUR, STREAM_SEEK_END, STREAM_SEEK_SET};
+use winapi::um::objidlbase::{self, STREAM_SEEK_CUR, STREAM_SEEK_END, STREAM_SEEK_SET};
 use winapi::um::winnt::{LARGE_INTEGER, ULARGE_INTEGER};
 use wio::com::ComPtr;
 
@@ -22,11 +20,11 @@ pub mod stat;
 #[derive(ComWrapper)]
 #[com(debug)]
 pub struct Stream {
-    ptr: ComPtr<IStream>,
+    ptr: ComPtr<objidlbase::IStream>,
 }
 
-impl Stream {
-    pub fn seek(&mut self, pos: SeekFrom) -> Result<u64, Error> {
+pub unsafe trait IStream {
+    fn seek(&mut self, pos: SeekFrom) -> Result<u64, Error> {
         let (pos, flag) = match pos {
             SeekFrom::Start(pos) => (pos as i64, STREAM_SEEK_SET),
             SeekFrom::Current(pos) => (pos, STREAM_SEEK_CUR),
@@ -38,25 +36,25 @@ impl Stream {
             *lpos.QuadPart_mut() = pos;
 
             let mut result = std::mem::zeroed();
-            let hr = self.ptr.Seek(lpos, flag, &mut result);
+            let hr = self.raw_stream().Seek(lpos, flag, &mut result);
 
             Error::map(hr, *result.QuadPart())
         }
     }
 
-    pub fn set_size(&mut self, new_size: u64) -> Result<Status, Error> {
+    fn set_size(&mut self, new_size: u64) -> Result<Status, Error> {
         unsafe {
             let mut lsize: ULARGE_INTEGER = std::mem::zeroed();
             *lsize.QuadPart_mut() = new_size;
 
-            let hr = self.ptr.SetSize(lsize);
+            let hr = self.raw_stream().SetSize(lsize);
             Error::map_status(hr)
         }
     }
 
-    pub fn copy_to(
+    fn copy_to(
         &mut self,
-        other: &mut Stream,
+        other: &mut dyn IStream,
         count: u64,
         cb_read: Option<&mut u64>,
         cb_written: Option<&mut u64>,
@@ -72,33 +70,36 @@ impl Stream {
                 None => std::ptr::null_mut(),
             };
 
-            let hr = self.ptr.CopyTo(other.get_raw(), count, cb_read, cb_written);
+            let other_ptr = other.raw_stream() as *const _ as *mut _;
+            let hr = self
+                .raw_stream()
+                .CopyTo(other_ptr, count, cb_read, cb_written);
             Error::map_status(hr)
         }
     }
 
-    pub fn commit(&mut self, flags: CommitFlags) -> Result<Status, Error> {
+    fn commit(&mut self, flags: CommitFlags) -> Result<Status, Error> {
         unsafe {
-            let hr = self.ptr.Commit(flags.0);
+            let hr = self.raw_stream().Commit(flags.0);
             Error::map_status(hr)
         }
     }
 
-    pub fn revert(&mut self) -> Result<Status, Error> {
+    fn revert(&mut self) -> Result<Status, Error> {
         unsafe {
-            let hr = self.ptr.Revert();
+            let hr = self.raw_stream().Revert();
             Error::map_status(hr)
         }
     }
 
-    pub fn lock_region(
+    fn lock_region(
         &mut self,
         offset: u64,
         count: u64,
         lock_type: LockType,
     ) -> Result<Status, Error> {
         unsafe {
-            let hr = self.ptr.LockRegion(
+            let hr = self.raw_stream().LockRegion(
                 std::mem::transmute(offset),
                 std::mem::transmute(count),
                 lock_type.0,
@@ -107,14 +108,14 @@ impl Stream {
         }
     }
 
-    pub fn unlock_region(
+    fn unlock_region(
         &mut self,
         offset: u64,
         count: u64,
         lock_type: LockType,
     ) -> Result<Status, Error> {
         unsafe {
-            let hr = self.ptr.UnlockRegion(
+            let hr = self.raw_stream().UnlockRegion(
                 std::mem::transmute(offset),
                 std::mem::transmute(count),
                 lock_type.0,
@@ -123,36 +124,50 @@ impl Stream {
         }
     }
 
-    pub fn stat(&self, flags: StatFlags) -> Result<Stat, Error> {
+    fn stat(&self, flags: StatFlags) -> Result<Stat, Error> {
         unsafe {
             let mut stat = std::mem::zeroed();
-            let hr = self.ptr.Stat(&mut stat, flags.0);
+            let hr = self.raw_stream().Stat(&mut stat, flags.0);
             Error::map_if(hr, || std::mem::transmute(stat))
         }
     }
 
-    pub fn try_clone(&self) -> Result<Self, Error> {
+    fn try_clone(&self) -> Result<Stream, Error> {
         unsafe {
             let mut ptr = std::ptr::null_mut();
-            let hr = self.ptr.Clone(&mut ptr);
-            Error::map_if(hr, || Self::from_raw(ptr))
+            let hr = self.raw_stream().Clone(&mut ptr);
+            Error::map_if(hr, || Stream::from_raw(ptr))
         }
+    }
+
+    unsafe fn raw_stream(&self) -> &objidlbase::IStream;
+}
+
+unsafe impl ISequentialStream for Stream {
+    unsafe fn raw_sstream(&self) -> &objidlbase::ISequentialStream {
+        &self.ptr
+    }
+}
+
+unsafe impl IStream for Stream {
+    unsafe fn raw_stream(&self) -> &objidlbase::IStream {
+        &self.ptr
     }
 }
 
 impl std::io::Read for Stream {
     fn read(&mut self, buf: &mut [u8]) -> std::io::Result<usize> {
-        <SequentialStream as std::io::Read>::read(self, buf)
+        ISequentialStream::read(self, buf).map_err(|e| e.into())
     }
 }
 
 impl std::io::Write for Stream {
     fn write(&mut self, buf: &[u8]) -> std::io::Result<usize> {
-        SequentialStream::write(self, buf).map_err(|e| e.into())
+        ISequentialStream::write(self, buf).map_err(|e| e.into())
     }
 
     fn flush(&mut self) -> std::io::Result<()> {
-        Stream::commit(self, CommitFlags::DEFAULT)
+        IStream::commit(self, CommitFlags::DEFAULT)
             .map(|_status| ())
             .map_err(|e| e.into())
     }
@@ -160,19 +175,6 @@ impl std::io::Write for Stream {
 
 impl std::io::Seek for Stream {
     fn seek(&mut self, pos: SeekFrom) -> std::io::Result<u64> {
-        Stream::seek(self, pos).map_err(|e| e.into())
-    }
-}
-
-impl std::ops::Deref for Stream {
-    type Target = SequentialStream;
-    fn deref(&self) -> &Self::Target {
-        unsafe { deref_com_wrapper(self) }
-    }
-}
-
-impl std::ops::DerefMut for Stream {
-    fn deref_mut(&mut self) -> &mut Self::Target {
-        unsafe { deref_com_wrapper_mut(self) }
+        IStream::seek(self, pos).map_err(|e| e.into())
     }
 }

@@ -33,7 +33,8 @@ impl Error {
     /// An internal error occurred.
     pub const WIC_INTERNALERROR: Error = Error(WINCODEC_ERR_INTERNALERROR);
     /// The bitmap bounds do not match the bitmap dimensions.
-    pub const WIC_SOURCERECTDOESNOTMATCHDIMENSIONS: Error = Error(WINCODEC_ERR_SOURCERECTDOESNOTMATCHDIMENSIONS);
+    pub const WIC_SOURCERECTDOESNOTMATCHDIMENSIONS: Error =
+        Error(WINCODEC_ERR_SOURCERECTDOESNOTMATCHDIMENSIONS);
     /// The component cannot be found.
     pub const WIC_COMPONENTNOTFOUND: Error = Error(WINCODEC_ERR_COMPONENTNOTFOUND);
     /// The bitmap size is outside the valid range.
@@ -63,7 +64,8 @@ impl Error {
     /// The component registration is invalid.
     pub const WIC_INVALIDREGISTRATION: Error = Error(WINCODEC_ERR_INVALIDREGISTRATION);
     /// The component initialization has failed.
-    pub const WIC_COMPONENTINITIALIZEFAILURE: Error = Error(WINCODEC_ERR_COMPONENTINITIALIZEFAILURE);
+    pub const WIC_COMPONENTINITIALIZEFAILURE: Error =
+        Error(WINCODEC_ERR_COMPONENTINITIALIZEFAILURE);
     /// The buffer allocated is insufficient.
     pub const WIC_INSUFFICIENTBUFFER: Error = Error(WINCODEC_ERR_INSUFFICIENTBUFFER);
     /// Duplicate metadata is present.
@@ -77,7 +79,8 @@ impl Error {
     /// The metadata type is unexpected.
     pub const WIC_UNEXPECTEDMETADATATYPE: Error = Error(WINCODEC_ERR_UNEXPECTEDMETADATATYPE);
     /// The specified bitmap property is only valid at root level.
-    pub const WIC_REQUESTONLYVALIDATMETADATAROOT: Error = Error(WINCODEC_ERR_REQUESTONLYVALIDATMETADATAROOT);
+    pub const WIC_REQUESTONLYVALIDATMETADATAROOT: Error =
+        Error(WINCODEC_ERR_REQUESTONLYVALIDATMETADATAROOT);
     /// The query string contains an invalid character.
     pub const WIC_INVALIDQUERYCHARACTER: Error = Error(WINCODEC_ERR_INVALIDQUERYCHARACTER);
     /// Windows Codecs received an error from the Win32 system.

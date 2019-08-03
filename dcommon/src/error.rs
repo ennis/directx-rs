@@ -210,6 +210,8 @@ pub mod d2d1;
 #[doc(hidden)]
 pub mod d3d11;
 #[doc(hidden)]
+pub mod disp;
+#[doc(hidden)]
 pub mod dwrite;
 #[doc(hidden)]
 pub mod dxgi;
@@ -217,8 +219,6 @@ pub mod dxgi;
 pub mod wic;
 #[doc(hidden)]
 pub mod win32;
-#[doc(hidden)]
-pub mod disp;
 
 #[cfg(test)]
 #[test]

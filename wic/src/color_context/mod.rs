@@ -1,3 +1,4 @@
+use com_wrapper::ComWrapper;
 use winapi::um::wincodec::IWICColorContext;
 use wio::com::ComPtr;
 

@@ -1,6 +1,6 @@
 [package]
 name = "wic"
-version = "0.3.0-alpha1"
+version = "0.3.0-beta1"
 authors = ["Connie Hilarides <conni_h@outlook.com>"]
 edition = "2018"
 workspace = ".."
@@ -10,13 +10,12 @@ Safe bindings for the Windows Imaging Component APIs.
 license = "MIT"
 
 [target.'cfg(windows)'.dependencies]
-com-wrapper = "0.1.0-alpha2"
-derive-com-wrapper = "0.1.0-alpha4"
+com-wrapper = "0.1.0"
 checked-enum = "0.1.1-alpha1"
 auto-enum = "0.2.0-alpha1"
 
 [target.'cfg(windows)'.dependencies.math2d]
-version = "0.2.0-alpha1"
+version = "0.3.0-beta1"
 path = "../math2d"
 features = ["d2d"]
 
@@ -28,9 +27,9 @@ features = ["dcommon", "d2d1", "winerror"]
 version = "0.2.0"
 
 [target.'cfg(windows)'.dependencies.dxgi]
-version = "0.3.0-alpha4"
+version = "0.3.0-beta1"
 path = "../dxgi"
 
 [target.'cfg(windows)'.dependencies.dcommon]
-version = "0.3.0-alpha1"
+version = "0.3.0-beta1"
 path = "../dcommon"

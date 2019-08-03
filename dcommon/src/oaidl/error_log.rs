@@ -1,3 +1,4 @@
+use com_wrapper::ComWrapper;
 use winapi::um::oaidl::IErrorLog;
 use wio::com::ComPtr;
 
@@ -8,6 +9,4 @@ pub struct ErrorLog {
     ptr: ComPtr<IErrorLog>,
 }
 
-impl ErrorLog {
-    
-}
+impl ErrorLog {}

@@ -1,7 +1,6 @@
 use crate::Error;
 
-use com_impl::Refcount;
-use com_impl::VTable;
+use com_impl::{com_impl, ComImpl, Refcount, VTable};
 use winapi::ctypes::c_void;
 use winapi::shared::winerror::{E_FAIL, S_OK};
 use winapi::um::objidlbase::{ISequentialStream, ISequentialStreamVtbl};

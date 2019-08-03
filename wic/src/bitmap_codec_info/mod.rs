@@ -1,5 +1,6 @@
 use std::ffi::OsStr;
 
+use com_wrapper::ComWrapper;
 use dcommon::helpers::wstrnlen;
 use dcommon::Error;
 use dcommon::GUID;

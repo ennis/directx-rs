@@ -1,5 +1,6 @@
 use crate::descriptions::{pixel_format::PixelFormatDescription, PixelFormat};
 
+use com_wrapper::ComWrapper;
 use dcommon::Error;
 use math2d::Sizeu;
 use winapi::um::wincodec::IWICBitmapLock;

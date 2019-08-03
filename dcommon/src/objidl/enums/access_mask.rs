@@ -1,4 +1,4 @@
-#[enum_flags]
+#[auto_enum::enum_flags]
 pub enum AccessMask {
     READ = 0x80000000,
     WRITE = 0x40000000,

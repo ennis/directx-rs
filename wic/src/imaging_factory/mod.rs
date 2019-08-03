@@ -1,3 +1,4 @@
+use com_wrapper::ComWrapper;
 use winapi::um::wincodec::IWICImagingFactory;
 use wio::com::ComPtr;
 

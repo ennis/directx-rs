@@ -1,7 +1,7 @@
-use crate::imaging_factory::ImagingFactory;
 use crate::bitmap_source::BitmapSource;
 use crate::descriptions::{Color, ColorType};
 use crate::enums::BitmapPaletteType;
+use crate::imaging_factory::ImagingFactory;
 
 use checked_enum::UncheckedEnum;
 use com_wrapper::ComWrapper;

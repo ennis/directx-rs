@@ -1,3 +1,4 @@
+use com_wrapper::ComWrapper;
 use winapi::um::wincodec::IWICBitmapFrameEncode;
 use wio::com::ComPtr;
 

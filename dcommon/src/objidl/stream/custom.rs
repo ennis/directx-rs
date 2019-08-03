@@ -6,8 +6,7 @@ use crate::{Error, Status};
 
 use std::io::SeekFrom;
 
-use com_impl::Refcount;
-use com_impl::VTable;
+use com_impl::{com_impl, ComImpl, Refcount, VTable};
 use com_wrapper::ComWrapper;
 use winapi::ctypes::c_void;
 use winapi::shared::winerror::{E_FAIL, SUCCEEDED, S_OK};
@@ -56,6 +55,16 @@ where
     vtbl: VTable<IStreamVtbl>,
     refcount: Refcount,
     stream: S,
+}
+
+impl<S: Stream> CustomStream<S> {
+    /// Create a Stream from a custom implementation. Unsafe because the way a COM API may use your stream
+    /// can be very unpredictable, so it's up to the user to investigate and ensure their stream will be
+    /// used in the correct way.
+    pub unsafe fn new(stream: S) -> super::Stream {
+        let raw = CustomStream::create_raw(stream);
+        super::Stream::from_raw(raw as _)
+    }
 }
 
 #[com_impl]

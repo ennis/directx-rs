@@ -16,7 +16,7 @@ impl<'a> BitmapPattern<'a> {
             position: *raw.Position.QuadPart(),
             pattern: from_raw_parts(raw.Pattern, raw.Length as usize),
             mask: from_raw_parts(raw.Mask, raw.Length as usize),
-            end_of_stream: raw.EndOfStream != 0
+            end_of_stream: raw.EndOfStream != 0,
         }
     }
 }
